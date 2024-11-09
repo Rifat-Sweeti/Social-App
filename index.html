@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2 id="form-title">Login</h2>
+        <form id="authForm">
+            <input type="email" id="email" placeholder="  Email" required />
+            <input type="password" id="password" placeholder="  Password" required />
+            <button type="submit" id="submitButton">Login</button>
+            <br>
+            <br>
+            <button id="googleSignIn" class="btn">Sign in with Google</button>
+        </form>
+        <p id="toggleFormText">Don't have an account? <a id="toggleForm">Register</a></p>
+        <p><a id="forgotPassword">Forgot Password?</a></p>
+        <button id="logoutButton" style="display: none;">Logout</button>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js"></script>
+    <script src="scripts.js" type="module"></script>
+</body>
+</html>
