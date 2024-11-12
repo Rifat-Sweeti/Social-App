@@ -9,7 +9,7 @@ const firebaseConfig = {
     messagingSenderId: "1050289692340",
     appId: "1:1050289692340:web:5269279a96ba1ff17e41e1",
     measurementId: "G-VEZHK9QP69"
-  };
+};
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -64,28 +64,34 @@ authForm.addEventListener('submit', async (e) => {
         if (isLogin) {
             // Login user
             await signInWithEmailAndPassword(auth, email, password);
-            alert("Logged in successfully!");
+            Swal.fire("Success", "Logged in successfully!", "success");
             showHomePage();
         } else {
             // Register user
             await createUserWithEmailAndPassword(auth, email, password);
-            alert("Registered successfully! Please log in.");
+            Swal.fire("Success", "Registered successfully! Please log in.", "success");
             updateForm(); // Switch to login form after successful registration
         }
     } catch (error) {
-        alert(error.message);
+        Swal.fire("Error", error.message, "error");
     }
 });
 
 // Forgot password
 forgotPasswordLink.addEventListener('click', async () => {
-    const email = prompt("Enter your email for password reset:");
-    if (email) {
+    const email = await Swal.fire({
+        title: 'Enter your email for password reset',
+        input: 'email',
+        inputPlaceholder: 'Enter your email',
+        showCancelButton: true
+    });
+
+    if (email.isConfirmed && email.value) {
         try {
-            await sendPasswordResetEmail(auth, email);
-            alert("Password reset email sent!");
+            await sendPasswordResetEmail(auth, email.value);
+            Swal.fire("Success", "Password reset email sent!", "success");
         } catch (error) {
-            alert(error.message);
+            Swal.fire("Error", error.message, "error");
         }
     }
 });
@@ -94,13 +100,12 @@ forgotPasswordLink.addEventListener('click', async () => {
 googleSignInButton.addEventListener('click', async () => {
     const provider = new GoogleAuthProvider();
     try {
-        // Use popup method to trigger Google login
         const result = await signInWithPopup(auth, provider);
         const user = result.user;
-        alert(`Logged in with Google: ${user.displayName}`);
+        Swal.fire("Success", `Logged in with Google: ${user.displayName}`, "success");
         showHomePage();
     } catch (error) {
-        alert(error.message);
+        Swal.fire("Error", error.message, "error");
     }
 });
 
@@ -108,10 +113,10 @@ googleSignInButton.addEventListener('click', async () => {
 logoutButton.addEventListener('click', async () => {
     try {
         await signOut(auth);
-        alert("Logged out successfully!");
+        Swal.fire("Success", "Logged out successfully!", "success");
         showLoginForm();
     } catch (error) {
-        alert(error.message);
+        Swal.fire("Error", error.message, "error");
     }
 });
 
@@ -122,7 +127,7 @@ function showHomePage() {
     toggleFormText.style.display = "none";
     forgotPasswordLink.style.display = "none";
     logoutButton.style.display = "block";
-    googleSignInButton.style.display = "none"; // Hide Google sign-in button when logged in
+    googleSignInButton.style.display = "none";
 }
 
 // Show login form
@@ -134,7 +139,7 @@ function showLoginForm() {
     toggleFormText.style.display = "block";
     forgotPasswordLink.style.display = "block";
     logoutButton.style.display = "none";
-    googleSignInButton.style.display = "block"; // Show Google sign-in button when logged out
+    googleSignInButton.style.display = "block";
     emailInput.value = '';
     passwordInput.value = '';
 }
