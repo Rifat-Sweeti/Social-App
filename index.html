@@ -1,30 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Social App</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-    <div class="container">
-        <h2 id="form-title">Login</h2>
-        <form id="authForm">
-            <input type="email" id="email" placeholder="  Email" required />
-            <input type="password" id="password" placeholder="  Password" required />
-            <button type="submit" id="submitButton">Login</button>
-            <br>
-            <br>
-            <button id="googleSignIn" class="btn">Sign in with Google</button>
-        </form>
-        <p id="toggleFormText">Don't have an account? <a id="toggleForm">Register</a></p>
-        <p><a id="forgotPassword">Forgot Password?</a></p>
-        <button id="logoutButton" style="display: none;">Logout</button>
-    </div>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">Social App</div>
+        <ul class="nav-links">
+            <li><a href="#" id="homeLink">Home</a></li>
+            <li><a href="#" id="logoutButton">Logout</a></li>
+        </ul>
+    </nav>
+
+    <!-- Login and Registration -->
+    <main id="authSection" class="main-content">
+        <section id="loginSection">
+            <h2>Login</h2>
+            <form id="loginForm" class="form">
+                <input type="email" id="loginEmail" placeholder="Email" required />
+                <input type="password" id="loginPassword" placeholder="Password" required />
+                <button type="submit" class="btn">Login</button>
+                <button type="button" id="googleLoginButton" class="btn google-btn">Sign in with Google</button>
+                <p><a href="#" id="forgotPasswordLink">Forgot Password?</a></p>
+                <p>Don't have an account? <a href="#" id="showRegister">Register</a></p>
+            </form>
+        </section>
+
+        <section id="registerSection" style="display: none;">
+            <h2>Register</h2>
+            <form id="registerForm" class="form">
+                <input type="email" id="registerEmail" placeholder="Email" required />
+                <input type="password" id="registerPassword" placeholder="Password" required />
+                <button type="submit" class="btn">Register</button>
+                <p>Already have an account? <a href="#" id="showLogin">Login</a></p>
+            </form>
+        </section>
+    </main>
+
+    <!-- Home Section -->
+    <main id="homeSection" class="main-content" style="display: none;">
+        <section id="addPostSection">
+            <h2>Add a New Post</h2>
+            <form id="postForm" class="form">
+                <input type="text" id="caption" placeholder="Enter caption" required />
+                <input type="url" id="pictureURL" placeholder="Enter image URL"/>
+                <input type="file" id="fileInput" accept="image/*" />
+                <button type="submit" class="btn">Add Post</button>
+            </form>
+        </section>
+
+        <section id="postsContainer">
+            <h2>Posts</h2>
+            <div id="postsGrid">
+                <p id="noPostsMessage" style="text-align: center; display: none;">No posts yet.</p>
+            </div>
+        </section>
+
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js"></script>
     <script src="scripts.js" type="module"></script>
 </body>
+
 </html>
