@@ -14,7 +14,10 @@ import {
     collection, 
     addDoc, 
     getDocs, 
-    onSnapshot 
+    onSnapshot, 
+    doc, 
+    deleteDoc, 
+    updateDoc 
 } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -94,7 +97,7 @@ registerForm.addEventListener("submit", (e) => {
         .catch((err) => Swal.fire("Error", err.message, "error"));
 });
 
-// Add Post
+// Add Post (Unchanged)
 postForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const caption = document.getElementById("caption").value.trim();
@@ -121,7 +124,7 @@ postForm.addEventListener("submit", async (e) => {
     }
 });
 
-// Save Post to Firestore
+// Save Post to Firestore (Unchanged)
 async function savePostToDatabase(caption, imageURL) {
     try {
         await addDoc(collection(db, "posts"), { caption, imageURL, createdAt: new Date() });
@@ -132,25 +135,106 @@ async function savePostToDatabase(caption, imageURL) {
     }
 }
 
-// Display Posts from Firestore
+// Display Posts from Firestore with Edit/Delete Functionality
 async function displayPosts() {
     onSnapshot(collection(db, "posts"), (snapshot) => {
         postsGrid.innerHTML = ""; // Clear posts
         snapshot.forEach((doc) => {
             const post = doc.data();
+            const postId = doc.id; // Get the post ID
             const postHTML = `
-                <div class="post">
+                <div class="post" id="post-${postId}">
                     <p>${post.caption}</p>
                     <img src="${post.imageURL}" alt="${post.caption}" />
+                    <button class="editPostButton" data-id="${postId}">Edit</button>
+                    <button class="deletePostButton" data-id="${postId}">Delete</button>
                 </div>
             `;
             postsGrid.innerHTML += postHTML;
         });
+
         if (snapshot.empty) {
             postsGrid.innerHTML = '<p id="noPostsMessage" style="text-align: center;">No posts yet.</p>';
         }
+
+        // Attach event listeners for edit and delete buttons
+        document.querySelectorAll(".editPostButton").forEach((button) =>
+            button.addEventListener("click", () => handleEditPost(button.dataset.id))
+        );
+
+        document.querySelectorAll(".deletePostButton").forEach((button) =>
+            button.addEventListener("click", () => handleDeletePost(button.dataset.id))
+        );
     });
 }
+
+// Edit Post Function
+async function handleEditPost(postId) {
+    const postDoc = await getDocs(collection(db, "posts"));
+    const post = postDoc.docs.find((doc) => doc.id === postId)?.data();
+
+    if (!post) {
+        Swal.fire("Error", "Post not found!", "error");
+        return;
+    }
+
+    const { value: newCaption } = await Swal.fire({
+        title: "Edit Post",
+        input: "text",
+        inputLabel: "New Caption",
+        inputValue: post.caption,
+        showCancelButton: true,
+    });
+
+    if (newCaption) {
+        try {
+            await updateDoc(doc(db, "posts", postId), { caption: newCaption });
+            Swal.fire("Success", "Post updated successfully!", "success");
+        } catch (error) {
+            Swal.fire("Error", error.message, "error");
+        }
+    }
+}
+
+// Delete Post Function
+async function handleDeletePost(postId) {
+    const confirmDelete = await Swal.fire({
+        title: "Are you sure?",
+        text: "This action cannot be undone!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+    });
+
+    if (confirmDelete.isConfirmed) {
+        try {
+            await deleteDoc(doc(db, "posts", postId));
+            Swal.fire("Success", "Post deleted successfully!", "success");
+        } catch (error) {
+            Swal.fire("Error", error.message, "error");
+        }
+    }
+}
+
+// Logout (Unchanged)
+logoutButton.addEventListener("click", () => {
+    signOut(auth)
+        .then(() => Swal.fire("Success", "Logged out successfully!", "success"))
+        .catch((err) => Swal.fire("Error", err.message, "error"));
+});
+
+// Authentication State Listener (Unchanged)
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        document.getElementById("authSection").style.display = "none";
+        document.getElementById("homeSection").style.display = "block";
+        displayPosts(); // Show posts on login
+    } else {
+        document.getElementById("authSection").style.display = "block";
+        document.getElementById("homeSection").style.display = "none";
+        postsGrid.innerHTML = '<p id="noPostsMessage" style="text-align: center;">No posts yet.</p>';
+    }
+});
 
 // Logout
 logoutButton.addEventListener("click", () => {
