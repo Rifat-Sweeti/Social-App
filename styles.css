@@ -1,29 +1,29 @@
-/* General Styling */
 body {
   font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #fafafa; /* Light background color */
+  background-color: #f8f8f8;
   color: #333;
   line-height: 1.6;
 }
 
 h2 {
   text-align: center;
-  color: #f56040; /* Instagram-like pink color */
+  color: #e4405f;
   margin-bottom: 1rem;
-  font-size: 1.8rem; /* Reduced size */
+  font-size: 1.8rem;
 }
 
-/* Navbar */
 .navbar {
-  background: linear-gradient(45deg, #f56040, #ff5e62, #f7a1b3); /* Instagram-like gradient */
+  background: linear-gradient(45deg, #fd1d1d, #f56040, #f77737);
   color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0.8em 1.5em;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Slight shadow */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  border-bottom: 3px solid rgba(255, 255, 255, 0.2);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .navbar .logo {
@@ -43,15 +43,14 @@ h2 {
   color: white;
   text-decoration: none;
   font-size: 1em;
-  transition: color 0.3s, transform 0.3s;
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .navbar .nav-links a:hover {
-  color: #fff;
+  color: #ffdc80;
   transform: translateY(-2px);
 }
 
-/* Main Content */
 .main-content {
   margin: 2em auto;
   width: 90%;
@@ -63,7 +62,6 @@ h2 {
   text-align: center;
 }
 
-/* Form */
 .form {
   display: flex;
   flex-direction: column;
@@ -73,11 +71,12 @@ h2 {
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s ease;
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
 }
 
 .form:hover {
   box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+  transform: scale(1.01);
 }
 
 .form input {
@@ -89,12 +88,12 @@ h2 {
 }
 
 .form input:focus {
-  border-color: #f56040; /* Instagram pink focus */
+  border-color: #fd1d1d;
   outline: none;
 }
 
 .form .btn {
-  background-color: #f56040; /* Instagram pink for buttons */
+  background: linear-gradient(45deg, #fd1d1d, #f56040, #f77737);
   color: white;
   border: none;
   padding: 10px 15px;
@@ -105,11 +104,10 @@ h2 {
 }
 
 .form .btn:hover {
-  background-color: #d04733; /* Darker pink for hover */
+  background: linear-gradient(45deg, #f56040, #f77737, #fcaf45);
   transform: translateY(-2px);
 }
 
-/* Google Button */
 .google-btn {
   background-color: #dd4b39;
   margin-top: -5px;
@@ -127,7 +125,6 @@ h2 {
   transform: translateY(-2px);
 }
 
-/* Posts */
 #postsContainer {
   margin-top: 3rem;
   text-align: center;
@@ -136,7 +133,8 @@ h2 {
 #postsGrid {
   display: grid;
   gap: 1.2rem;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: 1fr;
+  justify-items: stretch;
 }
 
 .post {
@@ -146,11 +144,12 @@ h2 {
   padding: 15px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   text-align: left;
-  transition: box-shadow 0.3s ease;
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
 }
 
 .post:hover {
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+  transform: scale(1.02);
 }
 
 .post img {
@@ -169,7 +168,7 @@ h2 {
 
 .post .author {
   font-weight: bold;
-  color: #f56040; /* Instagram pink */
+  color: #fd1d1d;
 }
 
 .post .timestamp {
@@ -177,7 +176,6 @@ h2 {
   font-size: 0.9em;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .navbar {
     flex-direction: column;
@@ -205,7 +203,7 @@ h2 {
   }
 
   #postsGrid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
   }
 
   .post {
