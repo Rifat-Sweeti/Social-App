@@ -216,7 +216,7 @@ async function handleDeletePost(postId) {
     }
 }
 
-// Logout (Unchanged)
+//  Logout (Unchanged)
 logoutButton.addEventListener("click", () => {
     signOut(auth)
         .then(() => Swal.fire("Success", "Logged out successfully!", "success"))
